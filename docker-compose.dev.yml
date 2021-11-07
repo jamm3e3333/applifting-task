@@ -11,8 +11,6 @@ services:
     client:
       stdin_open: true
       volumes:
-        - .client:/src
+        - ./client:/src
         - /src/node_modules
       command: yarn start
-      env_file:
-        - ./server/config/dev.env
