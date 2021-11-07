@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { EVENTS } from './constants/EVENTS';
 
 function App() {
-  const socket: Socket = io('http://localhost:4000');
+  const socket: Socket = io({ path: '/socket.io' });
   useEffect(() => {
     socket.on(EVENTS.connection, (id) => {
       console.log(id);
@@ -11,8 +11,8 @@ function App() {
   })
 
   return (
-    <div className="App">
-      
+    <div>
+      Ahoj
     </div>
   );
 }
