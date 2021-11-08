@@ -1,18 +1,21 @@
 import io, { Socket } from 'socket.io-client';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { EVENTS } from './constants/EVENTS';
 
+const socket: Socket = io({ path: '/socket.io' });
+
 function App() {
-  const socket: Socket = io({ path: '/socket.io' });
+  const [socketId, setSocketId] = useState('');
+
   useEffect(() => {
     socket.on(EVENTS.connection, (id) => {
-      console.log(id);
-    })
+      setSocketId(id.id);
+    });
   })
 
   return (
     <div>
-      Ahoj
+      {socketId && socketId}
     </div>
   );
 }
