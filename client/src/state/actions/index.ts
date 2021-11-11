@@ -15,9 +15,6 @@ interface JoinTeam {
 
 interface ClickUser {
     type: ActionType.CLICK_USER;
-    payload: {
-        myClicks: number;
-    }
 }
 
 export type Actions = 

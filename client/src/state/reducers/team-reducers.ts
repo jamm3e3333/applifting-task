@@ -1,5 +1,8 @@
+import io, { Socket } from 'socket.io-client';
 import TeamState from './state-types';
 import { Actions } from '../actions/index';
+
+const socket: Socket = io({ path: '/socket.io' });
 
 const initialUserState: TeamState = {
     myTeam: '',
@@ -28,7 +31,7 @@ const reducer = (
             return {
                 myTeam: state.myTeam,
                 teams: state.teams,
-                myClicks: action.payload.myClicks,
+                myClicks: state.myClicks + 1,
             }
         default: return state;
     }

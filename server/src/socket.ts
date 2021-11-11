@@ -10,21 +10,23 @@ interface TeamsStats {
 const teams: TeamsStats[] = [];
 
 function socket({io}: { io: Server}) {
+    //socket connection
     io.on(EVENTS.connection, (socket: Socket) => {
         console.log(socket.id);
         socket.emit(EVENTS.connection, {id: socket.id});
+        io.emit(EVENTS.getStats, teams);
 
         //join the team
         socket.on(EVENTS.joinTeam, (teamName) => {
-            console.log(teamName);
-            const findTeamIndex = teams.find(value => {
+            const findTeam = teams.find(value => {
                 value.name === teamName;
             });
-            if(!findTeamIndex) {
+            if(findTeam) return;
+            if(!findTeam) {
                 teams.push({
                     name: teamName,
                     clicks: 0,
-                    order: teams.length,
+                    order: teams.length + 1,
                 });
                 teams.sort((a,b) => {
                     if(a.order < b.order) return -1;
@@ -33,18 +35,16 @@ function socket({io}: { io: Server}) {
                 });
             }
             io.emit(EVENTS.getStats, teams);
-            console.log(teams);
         })
 
         //click by a team
         socket.on(EVENTS.clickTeam, (teamName) => {
             const teamIndex = teams.findIndex(value => {
-                value.name === teamName;
+                return value.name === teamName;
             });
             if(teamIndex === -1) return;
-            teams[teamIndex].clicks++;
+            teams[teamIndex].clicks = teams[teamIndex].clicks + 1;
             io.emit(EVENTS.getStats, teams);
-            console.log(teams);
         });
     });
 }
